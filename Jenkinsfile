@@ -8,7 +8,7 @@ pipeline {
   }
 
   environment {
-    DOCKER_BUILDKIT = '1'
+    DOCKER_BUILDKIT = '0'
     IMAGE_NAME = "patient-management-frontend:${BUILD_NUMBER}"
   }
 
