@@ -31,16 +31,18 @@ environment {
     }
 
    
-    //add stage to build and run on port 80
+    // Build and run frontend on Vite dev server port
     stage('Build and Run') {
       steps {
         script {
           if (isUnix()) {
             sh "docker build -t ${IMAGE_NAME} ."
-            sh "docker run -d -p 80:80 --name patient-mgmt-frontend ${IMAGE_NAME}"
+            sh "docker rm -f patient-mgmt-frontend || true"
+            sh "docker run -d -p 5173:5173 --name patient-mgmt-frontend ${IMAGE_NAME}"
           } else {
             bat "docker build -t ${IMAGE_NAME} ."
-            bat "docker run -d -p 80:80 --name patient-mgmt-frontend ${IMAGE_NAME}"
+            bat "docker rm -f patient-mgmt-frontend || ver > nul"
+            bat "docker run -d -p 5173:5173 --name patient-mgmt-frontend ${IMAGE_NAME}"
           }
         }
       }
