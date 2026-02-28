@@ -7,10 +7,9 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '20'))
   }
 
-  environment {
-    DOCKER_BUILDKIT = '0'
-    IMAGE_NAME = "patient-management-frontend:${BUILD_NUMBER}"
-  }
+environment {
+  IMAGE_NAME = "patient-management-frontend:${BUILD_NUMBER}"
+}
 
   stages {
     stage('Checkout') {
