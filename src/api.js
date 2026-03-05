@@ -1,4 +1,10 @@
-const API_BASE = (import.meta.env.VITE_API_BASE || "").trim().replace(/\/+$/, "");
+const configuredApiBase = (import.meta.env.VITE_API_BASE || "").trim();
+const inferredApiBase =
+  typeof window !== "undefined"
+    ? `${window.location.protocol}//${window.location.hostname}:4004`
+    : "";
+const hasConfiguredApiBase = Boolean(configuredApiBase);
+const API_BASE = (configuredApiBase || inferredApiBase).replace(/\/+$/, "");
 const TOKEN_KEY = "pm_react_token";
 
 const jsonHeaders = {
@@ -24,7 +30,7 @@ export async function request(path, options = {}, token = "") {
   try {
     response = await fetch(`${API_BASE}${path}`, fetchOptions);
   } catch (error) {
-    const shouldFallbackToSameOrigin = Boolean(API_BASE) && /^https?:\/\//i.test(API_BASE);
+    const shouldFallbackToSameOrigin = hasConfiguredApiBase && /^https?:\/\//i.test(API_BASE);
     if (!shouldFallbackToSameOrigin) {
       throw error;
     }
